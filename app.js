@@ -2,9 +2,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const todoForm = document.getElementById('todo-form');
     const todoInput = document.getElementById('todo-input');
     const todoList = document.getElementById('todo-list');
+    const modeToggle = document.getElementById('mode-toggle');
 
     // Load todos from localStorage
     let todos = JSON.parse(localStorage.getItem('todos')) || [];
+
+    // Load dark mode preference from localStorage
+    let isDarkMode = localStorage.getItem('darkMode') === 'true';
+
+    // Apply initial mode
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+        modeToggle.querySelector('.mode-toggle__icon').textContent = '☀️';
+    }
 
     // Render todos
     function renderTodos() {
@@ -44,6 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
             saveTodos();
             renderTodos();
         }
+    });
+
+    // Toggle dark mode
+    modeToggle.addEventListener('click', () => {
+        isDarkMode = !isDarkMode;
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+        modeToggle.querySelector('.mode-toggle__icon').textContent = isDarkMode ? '☀️' : '🌙';
     });
 
     // Initial render
